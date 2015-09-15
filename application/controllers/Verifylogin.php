@@ -3,15 +3,12 @@
 
 class VerifyLogin extends CI_Controller {
  
- function __construct()
- {
+ function __construct() {
    parent::__construct();
    $this->load->model('User_model','',TRUE);
  }
  
- 
- function index()
- {
+ function index() {
    //This method will have the credentials validation
 
    $this->load->library('form_validation');
@@ -25,18 +22,15 @@ class VerifyLogin extends CI_Controller {
     $data['titel'] = "Login";
     $this->load->view('header-view', $data);
     $this->load->view('login-view');
-   }
-   else
-   {
-     //Go to private area
-     redirect('dashboard', 'refresh');
+   } else {
+      //Go to private area
+      $_SESSION['notification'] = 'Pfieuw, het aanmelden is goed verlopen. Welkom!';
+      redirect('dashboard', 'refresh');
    }
  	
  }
 
- function check_database($password)
- {
-
+ function check_database($password) {
    //Field validation succeeded.  Validate against database
    $username = $this->input->post('username');
  
@@ -56,11 +50,8 @@ class VerifyLogin extends CI_Controller {
        $this->session->set_userdata('logged_in', $sess_array);
      }
      return TRUE;
-   }
-   else
-   {
+   } else {
      $this->form_validation->set_message('check_database', 'Foute gebruikersnaam en/of paswoord! Probeer opnieuw.');
-
      return false;
    }
  }

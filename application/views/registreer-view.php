@@ -1,5 +1,8 @@
        <h1>Registreer</h1>
-       <div class="errors"><?php echo validation_errors(); ?></div>
+       <div class="errors"><?php if(isset($_SESSION['notification'])){
+          echo($_SESSION['notification']);
+          unset($_SESSION['notification']);
+       }?></div>
        <?php echo form_open('RegistreerUser'); ?>
          <label for="username">Username:</label>
          <input type="text" size="20" id="username" name="username" value=""/>

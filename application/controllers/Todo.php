@@ -47,14 +47,20 @@
 			$taakId = $this->uri->segment(3);
 			$actiefStatus = $this->uri->segment(4);
 			$this->Todo_model->deleteToDo($taakId, $actiefStatus);
+			$_SESSION['notification'] = 'Het item werd verwijderd.';
 			redirect('todo', 'refresh');
 		}
 
 		function voegToe(){
-			$this->load->helper('form');
-			$data['titel'] = "Voeg item toe";
-			$this->load->view('header-view', $data);
-			$this->load->view('voegtoe-view', $data);
+			if($this->session->userdata('logged_in')){
+				$this->load->helper('form');
+				$data['titel'] = "Voeg item toe";
+				$this->load->view('header-view', $data);
+				$this->load->view('voegtoe-view', $data);
+			} else 	{
+			    //If no session, redirect to login page
+			    redirect('login', 'refresh');
+			}
 		}
 
 		function verplaatsItem(){
@@ -62,13 +68,19 @@
 			$actiefStatus = $this->uri->segment(4);
 
 			$nieuweStatus = ($actiefStatus == 0)? 1 : 0 ;	
+
+			if ($actiefStatus == 0){
+				$nieuweStatus = 1;
+				$_SESSION['notification'] = 'Pfffrt. Nog meer werk.';
+			} else {
+				$nieuweStatus = 0;
+				$_SESSION['notification'] = 'Alright! Dat is geschrapt.';
+			}
+
 			$this->Todo_model->veranderStatus($taakId, $nieuweStatus);
 
 			redirect('todo', 'refresh');
-
 		}
-
-
 	}
 ?>
 

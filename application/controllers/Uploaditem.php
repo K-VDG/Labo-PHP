@@ -9,20 +9,28 @@
 		 }
 
 		 function index() {
-			if($this->session->userdata('logged_in') && !empty($_POST['nieuwItem'])){
 
-					$dezeUser = $_SESSION['logged_in']['userID'];
-					$nieuwItem = $_POST['nieuwItem'];
+		 	if(!empty($_POST['nieuwItem'])) {
 
-					$this->Todo_model->setTodo($dezeUser, $nieuwItem);
-					redirect('todo', 'refresh');
+				if($this->session->userdata('logged_in')){
 
-			} else 	{
-			    //If no session, redirect to login page
-			    redirect('todo/voegtoe', 'refresh');
-			}				
+						$dezeUser = $_SESSION['logged_in']['userID'];
+						$nieuwItem = $_POST['nieuwItem'];
+
+						$this->Todo_model->setTodo($dezeUser, $nieuwItem);
+						$_SESSION['notification'] = 'Todo "' . $nieuwItem . '" toegevoegd.';
+						redirect('todo', 'refresh');
+
+				} else 	{
+				    //If no session, redirect to login page
+				   	redirect('login', 'refresh');
+				}	
+			} else {
+				$_SESSION['notification'] = 'Niets vergeten in te vullen?';
+				redirect('todo/voegtoe', 'refresh');
+			}
 		}
-
 	}
 ?>
+
 
